@@ -1,0 +1,36 @@
+General
+  Description : TSM RM1.08 BILLION UNRATED SUKUK WAKALAH PROGRAMME   Principle : ISLAMIC
+  Maturity Date : 08/07/2122   Mode of Offer : NOT FOR TENDERING
+  Acronym : IMTN   Currency : Malaysia Ringgit
+  Issuer : THP SURIA MEKAR SDN BHD
+Lead Arranger (LA) /
+Facility Agent (FA)
+  FA : ISLAM
+  LA : MAYBANKINV
+Co-Arranger
+  Facility Amount
+  Facility Limit : 1,080,000,000.00
+  Availability Period : 08/07/2122
+    Available Limit : 780,000,000.00
+  Outstanding : 300,000,000.00
+Spread Against Reference/ Source :
+Form : Bearer
+Others
+Authorised Depository : BNM
+Paying Agent : BNM
+Trustee/Security Agent : AMANAHRAYA TRUSTEES BERHAD
+  Islamic Concept
+AL-WAKALAH
+IJARAH
+MURABAHAH
+
+Selling Restrictions
+Schedule 6 or Section 229(1)(b)] of the CMSA
+Schedule 7 or Section 230(1)(b)] of the CMSA
+Schedule 9 or Section 257(3) of the CMSA
+
+Facility Approval
+  Facility Approval Date (BNM) :
+  Facility Approval Date (SC) : 17/06/2022
+  DPA Agreement Signed :
+  Approval Expiry : 28/10/2022

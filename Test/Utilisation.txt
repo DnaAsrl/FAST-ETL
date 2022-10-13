@@ -1,0 +1,19 @@
+Utilisation
+Facility Sectors – refers to issuer’s nature of business
+FISS Sector Amount (RM)
+8000 
+FINANCE, INSURANCE, REAL ESTATE AND BUSINESS ACTIVITIES
+1,080,000,000.00
+8100 
+    Financial Intermediation
+   1,080,000,000.00
+8110 
+       Finance Except Insurance and Pension Funding
+      1,080,000,000.00
+Sector Grand Total (RM) 1,080,000,000.00
+
+Facility Utilisation – refers to utilisation of debt securities
+FISS Utilisation Amount (RM)
+  Others
+1,080,000,000.00
+Utilisation Grand Total (RM) 1,080,000,000.00

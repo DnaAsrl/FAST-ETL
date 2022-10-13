@@ -1,0 +1,38 @@
+Instruments
+Instrument Code : IMTN Instrument Description : ISLAMIC MEDIUM TERM NOTES
+Instrument Type : MEDIUM TERM NOTES Instrument Transaction Type : NOT APPLICABLE
+Principle : ISLAMIC      
+Bullet / Revolving
+Revolving
+Instrument Amount
+  Instrument Limit : 1,080,000,000.00
+  Maturity Date : 08/07/2122
+    Available Limit : 780,000,000.00
+  Outstanding : 300,000,000.00
+Instrument Participants    
+Underwritten : No
+Auto deduction of underwriter commitment amount : No
+Total Original Commitment (RM) : 0.00
+Total Present Available Commitment (RM) : 0.00
+Organisation Original Commitment (RM) Present Available Commitment (RM)
+Guaranteed : Yes
+Total Guaranteed (RM) : 1,080,000,000.00
+Organisation Guaranteed Amount (RM)
+THP 1,080,000,000.00
+Remarks (200 characters) :
+Direct Bidder
+Organisation
+Primary Subscribers
+Organisation
+Suspended Direct Bidder
+Organisation
+Restricted Organisation
+Organisation
+Market Maker
+Organisation
+
+ABS Details
+Originator :
+Servicer :
+Special Purpose Vehicle (SPV) :
+Underlying Assets
