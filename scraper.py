@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import time
 from sqlalchemy import create_engine
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -22,12 +23,13 @@ def select(table, th, td):
 
     mycursor = mydb.cursor()
 
-    # sql = "SELECT * FROM " + table + " WHERE " + th + " LIKE '" + td + "'"
+    sql = "SELECT * FROM " + table + " WHERE " + th + " LIKE '" + td + "'"
     # print(sql)
 
-    # mycursor.execute(sql)
+    mycursor.execute(sql)
 
-    result = False
+    result = mycursor.fetchall()
+    # print(result)
 
     if result:
         return False
@@ -97,7 +99,6 @@ def scrape(url):
                     for k in range(len(th)):
                         dicts[th[k].text.replace(" ", "_").lower()] = td[k].text
 
-                    print(th[0].text+": "+td[0].text)
                     title = title.replace(" ", "_").lower()
 
                     if select(title, th[0].text.replace(" ", "_").lower(), td[0].text):
@@ -107,6 +108,7 @@ def scrape(url):
                         df.to_csv("FAST/" + title + '.csv', index=False)
 
                         # Insert whole DataFrame into MySQL
+                        print("saving " + th[0].text + ": " + td[0].text)
                         df.to_sql(title, con=db, if_exists='replace', chunksize=1000, index=False)
 
                         # # Save to txt
@@ -125,6 +127,7 @@ def scrape(url):
             if page < 3:
                 next_page.click()
             else:
+                print("Complete")
                 break
 
         except TimeoutException:
@@ -138,6 +141,13 @@ def scrape(url):
 
     # print("")
     browser.quit()
+
+
+def start():
+
+    while True:
+        main()
+        time.sleep(300)
 
 
 def main():

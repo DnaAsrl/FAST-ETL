@@ -1,7 +1,6 @@
 import scraper
 import tkinter as tk
 from tkinter import ttk, Text
-import schedule
 import threading
 
 
@@ -9,8 +8,8 @@ def select(url):
     scraper.scrape(url)
 
 
-def runSchedule():
-    schedule.every(5).minutes.do(scraper.main())
+def run_schedule():
+    scraper.start()
 
 
 if __name__ == '__main__':
@@ -29,22 +28,6 @@ if __name__ == '__main__':
     text = Text(root, height=19)
     text.place(x=25, y=70)
 
-    # text.insert('1.0', 'Stock Information\n'
-    #                    'Page  1\n'
-    #                    'Stock Code: VI220220\n'
-    #                    'Stock Code: VK220221\n'
-    #                    'Stock Code: VN220222\n'
-    #                    'Stock Code: SA220084\n'
-    #                    'Stock Code: VN220215\n'
-    #                    'Stock Code: VS220216\n'
-    #                    'Stock Code: VX220217\n'
-    #                    'Stock Code: FZ220001\n'
-    #                    'Stock Code: FZ220002\n'
-    #                    'Stock Code: VS220195\n'
-    #                    'Stock Code: VN220169\n'
-    #                    'Stock Code: UG220112\n'
-    #                    'Stock Code: VE220151\n'
-    #                    'Stock Code: VF220152')
     text['state'] = 'disabled'
     scrollbar = ttk.Scrollbar(root, orient='vertical', command=text.yview)
     scrollbar.place(x=660, y=70, height=308)
@@ -84,7 +67,7 @@ if __name__ == '__main__':
     scheduler = ttk.Button(
         root,
         text='Start Scheduler',
-        command=lambda: threading.Thread(target=runSchedule())
+        command=lambda: threading.Thread(target=run_schedule())
     )
 
     announcement.grid(row=0, column=1, padx=5, pady=5, ipadx=10)
