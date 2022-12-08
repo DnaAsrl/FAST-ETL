@@ -156,6 +156,7 @@ class App(tk.Tk):
 
                         title = title.replace(" ", "_").lower()
 
+                        # check if already exist in database
                         sql1 = "SELECT * FROM " + title + " WHERE " + th[0].text.replace(" ", "_").lower() + " LIKE '" + td[0].text + "'"
                         # print(sql)
                         self.mycursor.execute(sql1)
@@ -169,6 +170,13 @@ class App(tk.Tk):
                             print(dt_string)
                             self.text.insert(2.0, dt_string + ": saving " + th[0].text + ": " + td[0].text + "\n")
                             print("saving " + th[0].text + ": " + td[0].text)
+
+                            for x in dicts.keys():
+                                if x == "maturity_date" or x == "issue_date":
+                                    if dicts[x] != '-':
+                                        datetime_str = dicts[x]
+                                        dicts[x] = datetime.strptime(datetime_str, '%d/%m/%Y').strftime('%Y-%m-%d')
+
                             columns = ', '.join("`" + str(x).replace("**_", "").replace("_(rm_million)", "") + "`" for x in dicts.keys()) + ",`created_at`"
                             values = ', '.join("'" + str(x).replace("'", "") + "'" for x in dicts.values()) + ",'" + dt_string + "'"
                             sql2 = "INSERT INTO %s ( %s ) VALUES ( %s );" % (title, columns, values)
@@ -188,6 +196,7 @@ class App(tk.Tk):
                 if page < 3:
                     next_page.click()
                 else:
+                    self.text.insert(2.0, 'Scraping Completed!\n')
                     print("Complete")
                     break
 
@@ -241,7 +250,7 @@ class App(tk.Tk):
         # configure the grid
         self.footer.columnconfigure(0,weight=1)
         # exit button
-        self.exit_button = ttk.Button(self.footer, text='Exit', command=self.stop)
+        self.exit_button = ttk.Button(self.footer, text='Stop Scheduling', command=self.stop)
 
         self.exit_button.grid(column=0, row=0, sticky=tk.E)
 
