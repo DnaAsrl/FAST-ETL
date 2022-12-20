@@ -34,7 +34,7 @@ class App(tk.Tk):
             database="fastdb"
         )
 
-        self.mycursor = self.mydb.cursor()
+        self.mycursor = self.mydb.cursor(buffered=True)
 
     def create_header_frame(self):
 
@@ -210,7 +210,7 @@ class App(tk.Tk):
                 # as it will go the next page, the count will increase to indicates the next page
                 page += 1
                 # Max pages to scrape
-                if page < 2:
+                if page <= 2:
                     next_page.click()
                 else:
                     self.text.insert(2.0, 'Scraping Completed!\n')
