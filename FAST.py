@@ -156,8 +156,19 @@ class App(tk.Tk):
 
                         title = title.replace(" ", "_").lower()
 
-                        result = ''
-                        if title != 'more_auction_calendar':
+                        if title == 'more_auction_calendar':
+                            issue_date = '-'
+                            if td[4].text != '-':
+                                datetime_str = td[4].text
+                                issue_date = datetime.strptime(datetime_str, '%d/%m/%Y').strftime('%Y-%m-%d')
+                            # check if already exist in database
+                            sql1 = "SELECT * FROM " + title + " WHERE issues LIKE '" + td[0].text + "' AND issue_date LIKE '" + issue_date + "'"
+                            # print(sql1)
+                            self.mycursor.execute(sql1)
+                            result = self.mycursor.fetchone()
+                            # print(result)
+
+                        else:
                             # check if already exist in database
                             sql1 = "SELECT * FROM " + title + " WHERE " + th[0].text.replace(" ", "_").lower() + " LIKE '" + td[0].text + "'"
                             # print(sql)
@@ -199,7 +210,7 @@ class App(tk.Tk):
                 # as it will go the next page, the count will increase to indicates the next page
                 page += 1
                 # Max pages to scrape
-                if page < 20:
+                if page < 2:
                     next_page.click()
                 else:
                     self.text.insert(2.0, 'Scraping Completed!\n')
@@ -207,8 +218,8 @@ class App(tk.Tk):
                     break
 
             except TimeoutException:
+                self.text.insert(2.0, 'Scraping Completed!\n')
                 # if the driver could not find next clickable, it will end the loop
-                self.mycursor.close()
                 break
 
         browser.quit()
