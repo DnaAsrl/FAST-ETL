@@ -156,19 +156,21 @@ class App(tk.Tk):
 
                         title = title.replace(" ", "_").lower()
 
-                        # check if already exist in database
-                        sql1 = "SELECT * FROM " + title + " WHERE " + th[0].text.replace(" ", "_").lower() + " LIKE '" + td[0].text + "'"
-                        # print(sql)
-                        self.mycursor.execute(sql1)
-                        result = self.mycursor.fetchone()
-                        # print(result)
+                        result = ''
+                        if title != 'more_auction_calendar':
+                            # check if already exist in database
+                            sql1 = "SELECT * FROM " + title + " WHERE " + th[0].text.replace(" ", "_").lower() + " LIKE '" + td[0].text + "'"
+                            # print(sql)
+                            self.mycursor.execute(sql1)
+                            result = self.mycursor.fetchone()
+                            # print(result)
 
                         if not result:
                             # Insert into database
                             now = datetime.now()
                             dt_string = now.strftime("%Y-%m-%d %H:%M:%S")
                             print(dt_string)
-                            self.text.insert(2.0, dt_string + ": saving " + th[0].text + ": " + td[0].text + "\n")
+                            self.text.insert(3.0, dt_string + ": saving " + th[0].text + ": " + td[0].text + "\n")
                             print("saving " + th[0].text + ": " + td[0].text)
 
                             for x in dicts.keys():
@@ -176,6 +178,10 @@ class App(tk.Tk):
                                     if dicts[x] != '-':
                                         datetime_str = dicts[x]
                                         dicts[x] = datetime.strptime(datetime_str, '%d/%m/%Y').strftime('%Y-%m-%d')
+                                if x == "embargo_date":
+                                    if dicts[x] != '-':
+                                        datetime_str = dicts[x].strip(" APM")
+                                        dicts[x] = datetime.strptime(datetime_str, '%d/%m/%Y %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
 
                             columns = ', '.join("`" + str(x).replace("**_", "").replace("_(rm_million)", "") + "`" for x in dicts.keys()) + ",`created_at`"
                             values = ', '.join("'" + str(x).replace("'", "") + "'" for x in dicts.values()) + ",'" + dt_string + "'"
@@ -193,7 +199,7 @@ class App(tk.Tk):
                 # as it will go the next page, the count will increase to indicates the next page
                 page += 1
                 # Max pages to scrape
-                if page < 3:
+                if page < 20:
                     next_page.click()
                 else:
                     self.text.insert(2.0, 'Scraping Completed!\n')

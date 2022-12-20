@@ -56,7 +56,7 @@ for index, val in enumerate(links):
 
     # scrape the data on the new page and get back with the following command
     fieldsets = browser.find_elements(By.TAG_NAME, "fieldset")
-    # !! fieldset dalam fieldset huhuhuhuh
+
     for fieldset in fieldsets:
         f.write(fieldset.text)
 

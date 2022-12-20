@@ -9,32 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-
-
-def select(table, th, td):
-    import mysql.connector
-
-    mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="fastdb"
-    )
-
-    mycursor = mydb.cursor()
-
-    sql = "SELECT * FROM " + table + " WHERE " + th + " LIKE '" + td + "'"
-    # print(sql)
-
-    mycursor.execute(sql)
-
-    result = mycursor.fetchall()
-    # print(result)
-
-    if result:
-        return False
-    else:
-        return True
+import mysql.connector
 
 
 def scrape(url):
@@ -69,13 +44,16 @@ def scrape(url):
     # # Sort by ascending
     # browser.find_element(By.CSS_SELECTOR,  "th:nth-child(2) font").click()
 
-    # create sqlalchemy engine
-    db = create_engine("mysql+pymysql://{user}:{pw}@localhost/{db}"
-                       .format(user="root",
-                               pw="",
-                               db="fastdb"))
-
     while True:
+
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="sdproject"
+        )
+
+        mycursor = mydb.cursor()
 
         try:
             print("Page ", page)
@@ -101,19 +79,27 @@ def scrape(url):
 
                     title = title.replace(" ", "_").lower()
 
-                    if select(title, th[0].text.replace(" ", "_").lower(), td[0].text):
+                    sql1 = "SELECT * FROM " + title + " WHERE " + th[0].text.replace(" ", "_").lower() + " LIKE '" + td[0].text + "'"
+                    # print(sql)
+                    mycursor.execute(sql1)
+                    result = mycursor.fetchone()
+                    # print(result)
+
+                    if not result:
                         # saving the dataframe to a csv
                         templist.append(dicts)
                         df = pd.DataFrame(templist)
                         df.to_csv("FAST/" + title + '.csv', index=False)
 
-                        # Insert whole DataFrame into MySQL
+                        # Insert into database
                         print("saving " + th[0].text + ": " + td[0].text)
-                        df.to_sql(title, con=db, if_exists='replace', chunksize=1000, index=False)
-
-                        # # Save to txt
-                        # f.write(str(Table_dict))
-                        # f.write("\n")
+                        columns = ', '.join("`" + str(x) + "`" for x in dicts.keys())
+                        values = ', '.join("'" + str(x).replace("'", "") + "'" for x in dicts.values())
+                        sql2 = "INSERT INTO %s ( %s ) VALUES ( %s );" % (title, columns, values)
+                        # print(sql2)
+                        mycursor.execute(sql2)
+                        mydb.commit()
+                        print(mycursor.rowcount, "record inserted.")
 
             # wait for driver to find next button
             next_page = WebDriverWait(browser, 10).until(
@@ -123,16 +109,11 @@ def scrape(url):
             # as it will go the next page, the count will increase to indicates the next page
             page += 1
 
-            # Max pages to scrape
-            if page < 3:
-                next_page.click()
-            else:
-                print("Complete")
-                break
+            next_page.click()
 
         except TimeoutException:
             # if the driver could not find next clickable, it will end the loop
-            db.close()
+            mycursor.close()
             break
 
     # # saving the list to txt
