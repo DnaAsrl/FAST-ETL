@@ -156,20 +156,15 @@ class App(tk.Tk):
 
                         title = title.replace(" ", "_").lower()
 
+                        # check if already exist in database
                         if title == 'more_auction_calendar':
-                            issue_date = '-'
-                            if td[4].text != '-':
-                                datetime_str = td[4].text
-                                issue_date = datetime.strptime(datetime_str, '%d/%m/%Y').strftime('%Y-%m-%d')
-                            # check if already exist in database
-                            sql1 = "SELECT * FROM " + title + " WHERE issues LIKE '" + td[0].text + "' AND issue_date LIKE '" + issue_date + "'"
+                            sql1 = "SELECT * FROM " + title + " WHERE issues LIKE '" + td[0].text + "' AND target_quarter LIKE '" + td[1].text + "' AND target_month LIKE '" + td[2].text + "' AND target_year LIKE '" + td[3].text + "'"
                             # print(sql1)
                             self.mycursor.execute(sql1)
                             result = self.mycursor.fetchone()
                             # print(result)
 
                         else:
-                            # check if already exist in database
                             sql1 = "SELECT * FROM " + title + " WHERE " + th[0].text.replace(" ", "_").lower() + " LIKE '" + td[0].text + "'"
                             # print(sql)
                             self.mycursor.execute(sql1)
@@ -193,9 +188,14 @@ class App(tk.Tk):
                                     if dicts[x] != '-':
                                         datetime_str = dicts[x].strip(" APM")
                                         dicts[x] = datetime.strptime(datetime_str, '%d/%m/%Y %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
+                                if dicts[x] == '-':
+                                    dicts[x] = None
+                            insert = {
+                                key: value for key, value in dicts.items() if value is not None
+                            }
 
-                            columns = ', '.join("`" + str(x).replace("**_", "").replace("_(rm_million)", "") + "`" for x in dicts.keys()) + ",`created_at`"
-                            values = ', '.join("'" + str(x).replace("'", "") + "'" for x in dicts.values()) + ",'" + dt_string + "'"
+                            columns = ', '.join("`" + str(x).replace("**_", "").replace("_(rm_million)", "") + "`" for x in insert.keys()) + ",`created_at`"
+                            values = ', '.join("'" + str(x).replace("'", "") + "'" for x in insert.values()) + ",'" + dt_string + "'"
                             sql2 = "INSERT INTO %s ( %s ) VALUES ( %s );" % (title, columns, values)
                             # print(sql2)
                             self.mycursor.execute(sql2)
@@ -218,7 +218,7 @@ class App(tk.Tk):
                     break
 
             except TimeoutException:
-                self.text.insert(2.0, 'Scraping Completed!\n')
+                self.text.insert(2.0, 'Scraping completed as there is no more pages found!\n')
                 # if the driver could not find next clickable, it will end the loop
                 break
 

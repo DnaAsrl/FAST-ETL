@@ -6,11 +6,20 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import json
+import os
 
 s = Service("C:\Program Files (x86)\chromedriver.exe")
 browser = webdriver.Chrome(service=s)
 url = 'https://fast.bnm.gov.my/fastweb/public/FastPublicBrowseServlet.do?mode=MAIN&taskId=PB010400'
 browser.get(url)
+
+# Check whether the specified path exists or not
+isExist = os.path.exists('Announcement')
+
+if not isExist:
+    # Create a new directory because it does not exist
+    os.mkdir('Announcement')
+    print("The new directory is created!")
 
 actions = ActionChains(browser)
 
@@ -33,6 +42,17 @@ for index, val in enumerate(links):
     code = links[index].find_element(By.CSS_SELECTOR, "u").text
     links[index].click()
 
+    # Check whether the json exists or not
+    if not os.path.exists("Announcement/" + code + ".json"):
+        f = open("Announcement/" + code + ".json", "a")
+    else:
+        # Create a new json because it does not exist
+        print("Rewriting file")
+        f = open("Announcement/" + code + ".json", "w")
+
+    print(code + '\n')
+    f.write("Announcement: " + code + "\n")
+
     # scrape the data on the new page and get back with the following command
     rows = browser.find_elements(By.XPATH, "/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[2]/td/fieldset/table/tbody/tr")
 
@@ -44,6 +64,7 @@ for index, val in enumerate(links):
 
     json_object = json.dumps(dicts, indent=1)
     print(code + '\n' + json_object)
+    f.write(json_object)
 
     # back to main page
     browser.execute_script("window.history.go(-1)")

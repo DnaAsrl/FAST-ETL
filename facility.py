@@ -7,11 +7,20 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import json
+import os
 
 s = Service("C:\Program Files (x86)\chromedriver.exe")
 browser = webdriver.Chrome(service=s)
 url = 'https://fast.bnm.gov.my/fastweb/public/FastPublicBrowseServlet.do?mode=MAIN&taskId=PB030800'
 browser.get(url)
+
+# Check whether the specified path exists or not
+isExist = os.path.exists('Facility Information')
+
+if not isExist:
+    # Create a new directory because it does not exist
+    os.mkdir('Facility Information')
+    print("The new directory is created!")
 
 actions = ActionChains(browser)
 
@@ -52,6 +61,17 @@ for index, val in enumerate(links):
     actions.move_to_element(links[index]).perform()
     code = links[index].find_element(By.CSS_SELECTOR, "u").text
     links[index].click()
+
+    # Check whether the json exists or not
+    if not os.path.exists("Facility Information/" + code + ".json"):
+        f = open("Facility Information/" + code + ".json", "a")
+    else:
+        # Create a new json because it does not exist
+        print("Rewriting file")
+        f = open("Facility Information/" + code + ".json", "w")
+
+    print(code + '\n')
+    f.write("Facility Code: " + code + "\n")
 
     # scrape the data on the new page and get back with the following command
     details = {'general': {'description': browser.find_element(By.XPATH,
@@ -284,6 +304,7 @@ for index, val in enumerate(links):
 
     json_object = json.dumps(details, indent=1)
     print(code + '\n' + json_object)
+    f.write(json_object)
 
     # back to main page
     browser.execute_script("window.history.go(-1)")
