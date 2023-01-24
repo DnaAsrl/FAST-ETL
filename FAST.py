@@ -20,6 +20,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 from datetime import datetime
 from threading import Event
+from jsoncomparison import Compare, NO_DIFF
 
 
 def handle_file():
@@ -163,7 +164,7 @@ class App(tk.Tk):
             "https://fast.bnm.gov.my/fastweb/public/FastPublicBrowseServlet.do?mode=MAIN&taskId=PB010400",
             "https://fast.bnm.gov.my/fastweb/public/FastPublicBrowseServlet.do?mode=MAIN&taskId=PB030800",
             "https://fast.bnm.gov.my/fastweb/public/FastPublicBrowseServlet.do?mode=MAIN&taskId=PB030900",
-            # "https://fast.bnm.gov.my/fastweb/public/FastPublicBrowseServlet.do?mode=MAIN&taskId=PB050500"
+            "https://fast.bnm.gov.my/fastweb/public/FastPublicBrowseServlet.do?mode=MAIN&taskId=PB050500"
         ]
 
         while self.flag:
@@ -292,26 +293,30 @@ class App(tk.Tk):
                     # scrape inside details
 
                     links[index].click()
-                    try:
-                        WebDriverWait(self.browser, 3).until(
-                            EC.alert_is_present())  # this will wait 5 seconds for alert to appear
-                        alert = self.browser.switch_to.alert  # or self.driver.switch_to_alert() depends on your selenium version
-                        alert.accept()
-                    except TimeoutException:
-                        pass
 
-                    if title == 'all_announcements':
-                        announcement.run(self)
+                    if title == 'more_auction_calendar':
+                        try:
+                            WebDriverWait(self.browser, 3).until(
+                                EC.alert_is_present())  # this will wait 5 seconds for alert to appear
+                            alert = self.browser.switch_to.alert  # or self.driver.switch_to_alert() depends on your selenium version
+                            alert.accept()
+                        except TimeoutException:
+                            pass
+
+                    else:
+                        if title == 'all_announcements':
+                            dir_path = announcement.run(self)
+                            self.insert_filepath('announcement_dir', dt_string, dir_path, 'news_id')
+                        if title == 'facility_information':
+                            dir_path = facility.run(self)
+                            self.insert_filepath('facility_dir', dt_string, dir_path, 'facility_code')
+                        if title == 'stock_information':
+                            dir_path = stock.run(self)
+                            self.insert_filepath('stock_dir', dt_string, dir_path, 'stock_code')
+
                         # back to main page
                         self.browser.execute_script("window.history.go(-1)")
-                    if title == 'facility_information':
-                        facility.run(self)
-                        # back to main page
-                        self.browser.execute_script("window.history.go(-1)")
-                    if title == 'stock_information':
-                        stock.run(self)
-                        # back to main page
-                        self.browser.execute_script("window.history.go(-1)")
+
 
                 # wait for driver to find next button
                 next_page = WebDriverWait(self.browser, 10).until(
@@ -360,6 +365,17 @@ class App(tk.Tk):
         self.thread = threading.Thread(target=self.run)
         self.thread.start()
 
+    def insert_filepath(self, table, dt_string, dir_path, code):
+        try:
+            values = "'" + self.code + "','" + dir_path + "','" + dt_string + "'"
+            sql = "INSERT INTO %s (`%s`, `dir_path`, `created_at`) VALUES ( %s );" % (table, code, values)
+            # print(sql2)
+            self.mycursor.execute(sql)
+            self.mydb.commit()
+        except mysql.connector.Error as err:
+            print("Something went wrong: {}".format(err))
+
+    # child details scrape function
     def row(self, xpath, tr, td):
         item = []
 

@@ -13,12 +13,13 @@ import os
 def run(self):
     code = self.code
     browser = self.browser
-    timestr = time.strftime("%Y-%m-%d %H%M%S")
+    timestr = time.strftime("%Y-%m-%d%H%M%S")
     path = 'Stock Information/' + code
     isExist = os.path.exists(path)
     if not isExist:
         os.mkdir(path)
-    f = open(path + '/' + timestr + ".json", "a")
+    dir_path = path + '/' + timestr + ".json"
+    f = open(dir_path, "a")
     f.write("Stock Information: " + code + "\n")
 
     # print(code + '\n')
@@ -683,3 +684,5 @@ def run(self):
     json_object = json.dumps(details, indent=1)
     # print(code + '\n' + json_object)
     f.write(json_object)
+
+    return dir_path

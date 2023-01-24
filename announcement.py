@@ -2,16 +2,25 @@ from selenium.webdriver.common.by import By
 import time
 import json
 import os
+import glob
 
 
 def run(self):
     code = self.code
-    timestr = time.strftime("%Y-%m-%d %H%M%S")
+    timestr = time.strftime("%Y-%m-%d%H%M%S")
     path = 'Announcement/' + code
     isExist = os.path.exists(path)
+
     if not isExist:
         os.mkdir(path)
-    f = open(path + '/' + timestr + ".json", "a")
+        latest_file = None
+    # else:
+        # list_of_files = glob.glob(path)  # specify direction of latest file
+        # latest_file = max(list_of_files, key=os.path.getctime)
+        # print(list_of_files)
+
+    dir_path = path + '/' + timestr + ".json"
+    f = open(dir_path, "a")
     f.write("Announcement: " + code + "\n")
 
     # scrape the data on the new page and get back with the following command
@@ -31,3 +40,6 @@ def run(self):
 
     json_object = json.dumps(dicts, indent=1)
     f.write(json_object)
+    f.close()
+
+    return dir_path
