@@ -2,7 +2,6 @@ from selenium.webdriver.common.by import By
 import time
 import json
 import os
-import glob
 
 
 def run(self):
@@ -13,11 +12,6 @@ def run(self):
 
     if not isExist:
         os.mkdir(path)
-        latest_file = None
-    # else:
-        # list_of_files = glob.glob(path)  # specify direction of latest file
-        # latest_file = max(list_of_files, key=os.path.getctime)
-        # print(list_of_files)
 
     dir_path = path + '/' + timestr + ".json"
     f = open(dir_path, "a")

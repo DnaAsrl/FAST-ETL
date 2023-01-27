@@ -1,10 +1,4 @@
-from selenium import webdriver
-from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.support import expected_conditions as EC
 import time
 import json
 import os
@@ -679,7 +673,7 @@ def run(self):
 
     self.download(
         self.row('//*[@id="SpanPrint"]/table/tbody/tr[6]/td/fieldset/table/tbody/tr[6]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr', 2, 1),
-        'Facility Information', self.code)
+        'Stock Information', self.code)
 
     json_object = json.dumps(details, indent=1)
     # print(code + '\n' + json_object)
