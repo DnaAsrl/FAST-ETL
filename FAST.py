@@ -191,7 +191,8 @@ class App(tk.Tk):
     def run(self):
         if not self.stop_threads.is_set():
             self.check_thread()
-            s = Service("C:\Program Files (x86)\chromedriver.exe")
+            chromedriver = os.path.abspath(os.getcwd()) + "\\chromedriver.exe"
+            s = Service(chromedriver)
             self.chrome_options = Options()
 
             downloadFilepath = os.path.abspath(os.getcwd()) + '\\Download'
