@@ -6,7 +6,7 @@ import os
 
 def run(self):
     code = self.code
-    timestr = time.strftime("%Y-%m-%d%H%M%S")
+    timestr = time.strftime("%Y-%m-%d-%H%M%S")
     path = 'Announcement/' + code
     isExist = os.path.exists(path)
 

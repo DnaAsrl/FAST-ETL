@@ -7,7 +7,7 @@ import os
 def run(self):
     code = self.code
     browser = self.browser
-    timestr = time.strftime("%Y-%m-%d%H%M%S")
+    timestr = time.strftime("%Y-%m-%d-%H%M%S")
     path = 'Facility Information/' + code
     isExist = os.path.exists(path)
     if not isExist:
@@ -18,86 +18,80 @@ def run(self):
 
     # print(code + '\n')
     f.write("Facility Code: " + code + "\n")
+    f.write(browser.find_element(By.CSS_SELECTOR, '.tableHeader td+td b').text + "\n")
 
     # scrape the data on the new page and get back with the following command
     details = {
 
         'general': {
-            'description': browser.find_element(By.XPATH,
-                                                '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[1]/td[4]').text,
+            'fac_desc': browser.find_element(By.XPATH,
+                                             '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[1]/td[4]').text,
 
             'principle': browser.find_element(By.XPATH,
                                               "/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[1]/td[8]").text,
 
-            'maturity date': browser.find_element(By.XPATH,
-                                                  "/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[2]/td[4]").text,
+            'mat_date': browser.find_element(By.XPATH,
+                                             "/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[2]/td[4]").text,
 
-            'mode of offer': browser.find_element(By.XPATH,
+            'mode_of_offer': browser.find_element(By.XPATH,
                                                   "/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[2]/td[8]").text,
 
             'acronym': browser.find_element(By.XPATH,
                                             "/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[3]/td[4]").text,
 
-            'currency': browser.find_element(By.XPATH,
-                                             "/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[3]/td[8]").text,
+            'curr': browser.find_element(By.XPATH,
+                                         "/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[3]/td[8]").text,
 
             'issuer': browser.find_element(By.XPATH,
                                            "/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[4]/td[4]").text,
 
-            'Spread Against Reference/Source': browser.find_element(By.XPATH,
-                                                                    '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[1]/table/tbody/tr[1]/td[3]').text,
+            'spread_ref_source': browser.find_element(By.XPATH,
+                                                      '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[1]/table/tbody/tr[1]/td[3]').text,
 
-            'Form': browser.find_element(By.XPATH,
-                                         '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td[3]').text,
+            'form_type': browser.find_element(By.XPATH,
+                                              '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td[3]').text,
 
-            'Lead Arranger (LA) /Facility Agent (FA)': {
-                'FA': browser.find_element(By.XPATH,
-                                           '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[1]/fieldset/table/tbody/tr[1]/td[4]').text,
-                'LA': browser.find_element(By.XPATH,
-                                           '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[1]/fieldset/table/tbody/tr[2]/td[4]').text
-            },
+            'FA': browser.find_element(By.XPATH,
+                                       '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[1]/fieldset/table/tbody/tr[1]/td[4]').text,
+            'LA': browser.find_element(By.XPATH,
+                                       '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[1]/fieldset/table/tbody/tr[2]/td[4]').text,
 
-            'Facility Amount': {
-                'Facility Limit': browser.find_element(By.XPATH,
-                                                       '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[1]/td[4]').text,
-                'Availability Period': browser.find_element(By.XPATH,
-                                                            '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[2]/td[4]').text,
-                'Available Limit': browser.find_element(By.XPATH,
-                                                        '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[4]/td[4]').text,
-                'Outstanding': browser.find_element(By.XPATH,
-                                                    '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[5]/td[4]').text,
-            },
+            'auth_depository': browser.find_element(By.XPATH,
+                                                    '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[1]/fieldset/table/tbody/tr[1]/td[3]').text,
+            'paying_agent': browser.find_element(By.XPATH,
+                                                 '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[1]/fieldset/table/tbody/tr[2]/td[3]').text,
+            'security_agent': browser.find_element(By.XPATH,
+                                                   '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[1]/fieldset/table/tbody/tr[3]/td[3]').text,
 
-            'Facility Approval': {
-                'Facility Approval Date (BNM)': browser.find_element(By.XPATH,
-                                                                     '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[1]/td[4]').text,
-                'Facility Approval Date (SC)': browser.find_element(By.XPATH,
-                                                                    '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[2]/td[4]').text,
-                'DPA Agreement Signed': browser.find_element(By.XPATH,
-                                                             '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[3]/td[4]').text,
-                'Approval Expiry': browser.find_element(By.XPATH,
-                                                        '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[4]/td[4]').text
-            },
+            'fac_limit': browser.find_element(By.XPATH,
+                                              '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[1]/td[4]').text,
+            'avai_period': browser.find_element(By.XPATH,
+                                                '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[2]/td[4]').text,
+            'avai_limit': browser.find_element(By.XPATH,
+                                               '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[4]/td[4]').text,
+            'outstanding': browser.find_element(By.XPATH,
+                                                '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[5]/td[4]').text,
 
-            'Other': {
-                'Authorised Depository': browser.find_element(By.XPATH,
-                                                              '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[1]/fieldset/table/tbody/tr[1]/td[3]').text,
-                'Paying Agent': browser.find_element(By.XPATH,
-                                                     '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[1]/fieldset/table/tbody/tr[2]/td[3]').text,
-                'Trustee/Security Agent': browser.find_element(By.XPATH,
-                                                               '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[1]/fieldset/table/tbody/tr[3]/td[3]').text,
-            },
-            'co-arranger': self.row(
+            'fac_app_date_bnm': browser.find_element(By.XPATH,
+                                                     '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[1]/td[4]').text,
+            'fac_app_date_sc': browser.find_element(By.XPATH,
+                                                    '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[2]/td[4]').text,
+            'dpa_agr_sign': browser.find_element(By.XPATH,
+                                                 '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[3]/td[4]').text,
+            'app_expiry': browser.find_element(By.XPATH,
+                                               '//*[@id="SpanPrint"]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[3]/fieldset/table/tbody/tr[4]/td[4]').text,
+
+            'co_arranger': self.row(
                 '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[1]/fieldset/table/tbody/tr[3]/td/table/tbody/tr',
                 2,
                 ''),
 
-            'Islamic Concept': self.row(
+            'islamic_concept': self.row(
                 '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[3]/table[1]/tbody/tr',
                 2,
                 ''),
 
-            'Selling Restriction': self.row(
+            'sell_restriction': self.row(
                 '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[2]/td/fieldset/table/tbody/tr[6]/td/table/tbody/tr/td[3]/table[2]/tbody/tr',
                 2,
                 '')
@@ -106,54 +100,53 @@ def run(self):
 
         'instruments': {
 
-            'Instrument Code': browser.find_element(By.XPATH,
-                                                    '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr[1]/td[3]').text,
+            'inst_code': browser.find_element(By.CSS_SELECTOR, 'tr~ tr+ tr tr tr:nth-child(1) td:nth-child(3) b').text,
 
-            'Instrument Type': browser.find_element(By.XPATH,
-                                                    '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr[2]/td[3]').text,
+            'inst_type': browser.find_element(By.XPATH,
+                                              '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr[2]/td[3]').text,
 
-            'Instrument Description': browser.find_element(By.XPATH,
-                                                           '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr[1]/td[6]').text,
+            'inst_desc': browser.find_element(By.XPATH,
+                                              '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr[1]/td[6]').text,
 
-            'Instrument Transaction Type': browser.find_element(By.XPATH,
-                                                                '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr[2]/td[6]').text,
+            'inst_trx_type': browser.find_element(By.XPATH,
+                                                  '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr[2]/td[6]').text,
 
-            'Principle': browser.find_element(By.XPATH,
+            'principle': browser.find_element(By.XPATH,
                                               '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr[3]/td[3]').text,
 
-            'Bullet / Revolving': browser.find_element(By.XPATH,
-                                                       '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[2]/td/fieldset/table/tbody/tr/td').text,
+            'bullet_revolving': browser.find_element(By.XPATH,
+                                                     '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[2]/td/fieldset/table/tbody/tr/td').text,
 
-            'Instrument Amount': {
-                'Instrument Limit': browser.find_element(By.XPATH,
-                                                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[3]/td/fieldset/table/tbody/tr[1]/td[4]').text,
-                'Maturity Date': browser.find_element(By.XPATH,
-                                                      '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[3]/td/fieldset/table/tbody/tr[2]/td[4]').text,
-                'Available Limit': browser.find_element(By.XPATH,
-                                                        '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td[4]').text,
-                'Outstanding': browser.find_element(By.XPATH,
-                                                    '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[3]/td/fieldset/table/tbody/tr[5]/td[4]').text
-            },
+            'inst_limit': browser.find_element(By.XPATH,
+                                               '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[3]/td/fieldset/table/tbody/tr[1]/td[4]').text,
+            'mat_date': browser.find_element(By.XPATH,
+                                             '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[3]/td/fieldset/table/tbody/tr[2]/td[4]').text,
+            'avai_limit': browser.find_element(By.XPATH,
+                                               '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td[4]').text,
+            'outstanding': browser.find_element(By.XPATH,
+                                                '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[3]/td/fieldset/table/tbody/tr[5]/td[4]').text,
 
             'Instrument Participants': {
                 'Underwritten': {
-                    'Underwritten': browser.find_element(By.XPATH,
-                                                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[1]/fieldset/legend').text,
-                    'Auto Deduction': browser.find_element(By.XPATH,
-                                                           '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[1]/fieldset/table/tbody/tr[1]/td').text,
-                    'Total Original Commitment(RM)': browser.find_element(By.XPATH,
-                                                                          '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[1]/fieldset/table/tbody/tr[2]/td[3]').text,
-                    'Total Present Available Commitment (RM)': browser.find_element(By.XPATH,
-                                                                                    '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[1]/fieldset/table/tbody/tr[3]/td[3]').text,
+                    'underwritten': browser.find_element(By.XPATH,
+                                                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[1]/fieldset/legend').text.replace(
+                        'Underwritten : ', ''),
+                    'auto_deduction': browser.find_element(By.XPATH,
+                                                           '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[1]/fieldset/table/tbody/tr[1]/td').text.replace(
+                        'Auto deduction of underwriter commitment amount : ', ''),
+                    'total_ori_commit': browser.find_element(By.XPATH,
+                                                             '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[1]/fieldset/table/tbody/tr[2]/td[3]').text,
+                    'total_av_commit': browser.find_element(By.XPATH,
+                                                            '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[1]/fieldset/table/tbody/tr[3]/td[3]').text,
                     'organisation': self.row(
                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[1]/fieldset/table/tbody/tr[4]/td/table/tbody/tr',
                         2,
                         1),
-                    'Original Commitment': self.row(
+                    'ori_commit': self.row(
                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[1]/fieldset/table/tbody/tr[4]/td/table/tbody/tr',
                         2,
                         1),
-                    'Present Available Commitment (RM)': self.row(
+                    'present_avai_comm': self.row(
                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[1]/fieldset/table/tbody/tr[4]/td/table/tbody/tr',
                         2,
                         1),
@@ -163,64 +156,65 @@ def run(self):
                 'Guaranteed': {
 
                     'Guaranteed': browser.find_element(By.XPATH,
-                                                       '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[2]/fieldset/legend').text,
-                    'Total Guaranteed (RM)': browser.find_element(By.XPATH,
-                                                                  '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[2]/fieldset/table/tbody/tr[1]/td[3]').text,
-                    'Remarks': browser.find_element(By.XPATH,
+                                                       '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[2]/fieldset/legend').text.replace(
+                        'Guaranteed : ', ''),
+                    'total_guaranteed': browser.find_element(By.XPATH,
+                                                             '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[2]/fieldset/table/tbody/tr[1]/td[3]').text,
+                    'remarks': browser.find_element(By.XPATH,
                                                     '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[2]/fieldset/table/tbody/tr[3]/td[3]').text,
-                    'Organisation': self.row(
+                    'organisation': self.row(
                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[2]/fieldset/table/tbody/tr[2]/td/table/tbody/tr',
                         2,
                         1),
-                    'Guaranteed Amount (RM)': self.row(
+                    'guaranteed_amount': self.row(
                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td[2]/fieldset/table/tbody/tr[2]/td/table/tbody/tr',
                         2,
                         2)
                 },
 
                 'Direct Bidder': {
-                    'Organisation': self.row(
+                    'organisation': self.row(
                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[2]/td[1]/fieldset/table/tbody/tr/td/table/tbody/tr',
                         2,
                         '')
                 },
 
                 'Primary Subscribers': {
-                    'Organisation': self.row(
+                    'organisation': self.row(
                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[2]/td[2]/fieldset/table/tbody/tr/td/table/tbody/tr',
                         2,
                         '')
                 },
 
                 'Suspended Direct Bidder': {
-                    'Organisation': self.row(
+                    'organisation': self.row(
                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[3]/td[1]/fieldset/table/tbody/tr/td/table/tbody/tr',
                         2,
                         '')
                 },
 
                 'Restricted Organisation': {
-                    'Organisation': self.row(
+                    'organisation': self.row(
                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[4]/td/fieldset/table/tbody/tr[3]/td[2]/fieldset/table/tbody/tr/td/table/tbody/tr',
                         2,
                         '')
                 },
 
                 'Market Maker': {
-                    'Organisation': self.row(
+                    'organisation': self.row(
                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[1]/fieldset/table/tbody/tr',
                         2,
                         '')
                 },
 
                 'ABS Details': {
-                    'Originator': browser.find_element(By.XPATH,
-                                                       '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[2]/fieldset/table/tbody/tr[1]/td[4]').text,
-                    'Servicer': browser.find_element(By.XPATH,
-                                                     '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[2]/fieldset/table/tbody/tr[2]/td[4]').text,
-                    'Special Purpose Vehicle (SPV)': browser.find_element(By.XPATH,
-                                                                          '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[2]/fieldset/table/tbody/tr[3]/td[4]').text,
-                    'Underlying Assets': self.row(
+                    'abs_originator': browser.find_element(By.XPATH,
+                                                           '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[2]/fieldset/table/tbody/tr[1]/td[4]').text,
+                    'abs_servicer': browser.find_element(By.XPATH,
+                                                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[2]/fieldset/table/tbody/tr[2]/td[4]').text,
+                    'abs_spv': browser.find_element(By.XPATH,
+                                                    '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[2]/fieldset/table/tbody/tr[3]/td[4]').text,
+                    'und_assets': self.row(
                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[3]/td/fieldset/table/tbody/tr[5]/td/table/tbody/tr/td[2]/fieldset/table/tbody/tr[4]/td/table/tbody/tr',
                         2, ''),
                 },
@@ -229,36 +223,38 @@ def run(self):
 
         'rating': {
 
-            'Government Guarantee': browser.find_element(By.XPATH,
-                                                         '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr[1]/td').text,
-            'Indicator': browser.find_element(By.XPATH,
-                                              '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr[2]/td').text,
+            'gov_guarantee_flag': browser.find_element(By.XPATH,
+                                                       '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr[1]/td').text.replace(
+                'Government Guarantee : ', ''),
+            'rat_indicator': browser.find_element(By.XPATH,
+                                                  '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[4]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr[2]/td').text.replace(
+                'Indicator :', ''),
             'facility rating': {
-                'Instrument': self.row(
+                'inst': self.row(
                     '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[4]/td/fieldset/table/tbody/tr[2]/td/fieldset/table/tbody/tr',
                     2, 1),
-                'Rating Agency': self.row(
+                'rat_agent': self.row(
                     '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[4]/td/fieldset/table/tbody/tr[2]/td/fieldset/table/tbody/tr',
                     2, 2),
-                'Effective Date': self.row(
+                'eff_date': self.row(
                     '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[4]/td/fieldset/table/tbody/tr[2]/td/fieldset/table/tbody/tr',
                     2, 3),
-                'Current Rating Tenure': self.row(
+                'curr_rate_tnr': self.row(
                     '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[4]/td/fieldset/table/tbody/tr[2]/td/fieldset/table/tbody/tr',
                     2, 4),
-                'Initial Rating': self.row(
+                'init_rate': self.row(
                     '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[4]/td/fieldset/table/tbody/tr[2]/td/fieldset/table/tbody/tr',
                     2, 5),
-                'Current Rating': self.row(
+                'curr_rate': self.row(
                     '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[4]/td/fieldset/table/tbody/tr[2]/td/fieldset/table/tbody/tr',
                     2, 6),
-                'Rating Action': self.row(
+                'rat_action': self.row(
                     '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[4]/td/fieldset/table/tbody/tr[2]/td/fieldset/table/tbody/tr',
                     2, 7),
-                'Rating Outlook': self.row(
+                'rat_outlook': self.row(
                     '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[4]/td/fieldset/table/tbody/tr[2]/td/fieldset/table/tbody/tr',
                     2, 8),
-                'Rating Watch': self.row(
+                'rat_watch': self.row(
                     '/html/body/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[4]/td/fieldset/table/tbody/tr[2]/td/fieldset/table/tbody/tr',
                     2, 9),
             },
@@ -267,25 +263,25 @@ def run(self):
         'utilisation': {
 
             'Facility Sectors': {
-                'FISS': self.row('//*[@id="tblSector"]/tbody/tr', 1, 1),
-                'Sector': self.row('//*[@id="tblSector"]/tbody/tr', 1, 2),
-                'Amount (RM)': self.row('//*[@id="tblSector"]/tbody/tr', 1, 3)
+                'fiss': self.row('//*[@id="tblSector"]/tbody/tr', 1, 1),
+                'sector': self.row('//*[@id="tblSector"]/tbody/tr', 1, 2),
+                'amount': self.row('//*[@id="tblSector"]/tbody/tr', 1, 3)
 
             },
 
             'Facility Utilisation': {
-                'FISS': self.row('//*[@id="tblUtilise"]/tbody/tr', 1, 1),
-                'Utilisation': self.row('//*[@id="tblUtilise"]/tbody/tr', 1, 2),
-                'Amount (RM)': self.row('//*[@id="tblUtilise"]/tbody/tr', 1, 3)
+                'fiss': self.row('//*[@id="tblUtilise"]/tbody/tr', 1, 1),
+                'util': self.row('//*[@id="tblUtilise"]/tbody/tr', 1, 2),
+                'amount': self.row('//*[@id="tblUtilise"]/tbody/tr', 1, 3)
             }
         },
 
         'attachment': {
-            'file name': self.row(
+            'file_name': self.row(
                 '//*[@id="SpanPrint"]/table/tbody/tr[6]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr', 2, 1),
-            'file description': self.row(
+            'file_desc': self.row(
                 '//*[@id="SpanPrint"]/table/tbody/tr[6]/td/fieldset/table/tbody/tr[1]/td/table/tbody/tr', 2, 2),
-            'Lead Arranger/ Facility Agent Remarks': browser.find_element(By.XPATH,
+            'remarks': browser.find_element(By.XPATH,
                                                                           '//*[@id="SpanPrint"]/table/tbody/tr[6]/td/fieldset/table/tbody/tr[2]/td/fieldset/table/tbody/tr/td').text
         }
     }
